@@ -22,7 +22,7 @@ function handleClick() {
     const top_container = document.getElementById("main-container")
     removeChildNodes(top_container)
 
-    let squares = prompt("How many buttons would you like? The max is 64 x 64") 
+    let squares = prompt("How many buttons would you like per row? The same amount gets added per column, the max is 64 x 64") 
     if (squares > 64) {
         return alert("That is invalid, please choose again.")
     } else {
@@ -49,7 +49,26 @@ function handleClick() {
 const elements = document.getElementsByClassName("myGridContainer");
 
 function handleMouseOver(event) {
-    event.target.style.backgroundColor = "yellow";
+    const bg_color = event.target; // get element ;
+    let computed_style = getComputedStyle(bg_color) ;
+    let backgroundColor = computed_style.backgroundColor ;
+    
+    if (backgroundColor === "rgb(255, 255, 255)" || backgroundColor === "#ffffff" || backgroundColor === "white") {
+        let red = Math.round(Math.random() * 256);
+        let blue = Math.round(Math.random() * 256);
+        let green = Math.round(Math.random() * 256);
+        event.target.style.backgroundColor = `rgb(${red},${blue},${green})`;    
+    } else {
+        let rgbColorItem = event.target.style.backgroundColor;
+        let rgbColors = rgbColorItem.substring(4, rgbColorItem.length - 1);
+        let rgbColorValues = rgbColors.split(",");
+        let lowerRed = parseInt(rgbColorValues[0].trim()) * .9 - 10 ;
+        let lowerBlue = parseInt(rgbColorValues[1].trim()) * .9 - 10 ;
+        let lowerGreen = parseInt(rgbColorValues[2].trim()) * .9 - 10 ;
+        event.target.style.backgroundColor = `rgb(${lowerRed },${lowerBlue},${lowerGreen})`;    
+
+    }
+    
 }
 
 function handleMouseOut(event) {
@@ -58,7 +77,7 @@ function handleMouseOut(event) {
 
 for(let i = 0; i < elements.length; i++) {
     elements[i].addEventListener('mouseover', handleMouseOver);
-    elements[i].addEventListener('mouseout', handleMouseOut);
+    //elements[i].addEventListener('mouseout', handleMouseOut);
 }
 
     }
